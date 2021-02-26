@@ -62,10 +62,16 @@ methods:{
 <style lang="scss" scoped>
 .login{
   height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #327;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90000;
+
 }
   .container, .row{
     height: 80vh;
