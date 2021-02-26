@@ -1,7 +1,7 @@
 <template>
       <nav class="navbar navbar-expand-lg fixed-top navbar-light">
         <div class="container">
-        <a class="navbar-brand" href="#"><img src="@/assets/logos/icon.svg" class="img-fluid" alt=""></a>
+        <router-link class="navbar-brand" to="#"><img src="@/assets/logos/icon.svg" class="img-fluid" alt=""></router-link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -9,13 +9,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#"><span class="fas fa-home fa-2x"></span> <span class="sr-only">(current)</span></a>
+              <router-link class="nav-link" to="#"><span class="fas fa-home fa-2x"></span> <span class="sr-only">(current)</span></router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"><span class="fas fa-bell fa-2x"></span></a>
+              <router-link class="nav-link" to="#"><span class="fas fa-bell fa-2x"></span></router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"><span class="fas fa-comments fa-2x"></span></a>
+              <router-link class="nav-link" to="#"><span class="fas fa-comments fa-2x"></span></router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/logout"><span class="fa fa-sign-out-alt fa-2x"></span></router-link>
             </li>
           </ul>
           <img class="avatar" :src="getLogedUser.avatar" alt="">

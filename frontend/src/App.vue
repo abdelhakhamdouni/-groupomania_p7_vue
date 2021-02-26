@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <status-bar />
     <main class="main">
       <router-view/>
     </main>
@@ -10,9 +9,8 @@
 <script>
 import { mapActions, mapGetters} from 'vuex'
 import axios from "axios"
-import StatusBar from './components/StatusBar.vue'
 export default {
-  components: { StatusBar },
+  components: {  },
   computed:{
 
      ...mapGetters(['isUserLogged'])
@@ -64,22 +62,9 @@ body{
   padding: 0;
 }
 
-#nav {
-  padding: 30px;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
 body, #app{
   min-height: 100vh;
 }
-main.main{
-  margin-top: 5em;
-}
+
 </style>
