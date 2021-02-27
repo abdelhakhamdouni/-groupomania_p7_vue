@@ -1,9 +1,10 @@
 <template>
   <div class="home">
-    <status-bar />
-    <section class="posts__list">
+    <h5 class="py-3">
+      Tous les publications
+    </h5>
+      <post-form />
       <post-page />
-    </section>
   </div>
 </template>
 
@@ -11,11 +12,11 @@
 import axios from 'axios'
 import { mapActions } from 'vuex'
 import PostPage from './PostPage.vue'
-import StatusBar from '../components/StatusBar.vue'
+import PostForm from '../components/PostForm.vue'
 // @ is an alias to /src
 
 export default {
-  components: { PostPage, StatusBar },
+  components: { PostPage, PostForm},
   name: 'Home',
   data(){
     return {
@@ -41,6 +42,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.home{
+  width: 45%;
+  position: absolute;
+  left: 30%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+}
   .posts__list{
     margin-top: 4em;
   }

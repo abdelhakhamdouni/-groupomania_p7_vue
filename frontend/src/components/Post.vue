@@ -82,7 +82,7 @@ export default {
   box-shadow: 0 0 8px lightgray;
   border-radius: 5px;
   //margin: 1em;
-  max-width: 40vw;
+  margin-bottom: 1em;
   .post__header{
     display: flex;
     justify-content: flex-start;

@@ -1,29 +1,11 @@
 <template>
-      <nav class="navbar navbar-expand-lg fixed-top navbar-light">
-        <div class="container">
+      <nav class="navbar">
         <router-link class="navbar-brand" to="#"><img src="@/assets/logos/icon.svg" class="img-fluid" alt=""></router-link>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <router-link class="nav-link" to="#"><span class="fas fa-home fa-2x"></span> <span class="sr-only">(current)</span></router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="#"><span class="fas fa-bell fa-2x"></span></router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="#"><span class="fas fa-comments fa-2x"></span></router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/logout"><span class="fa fa-sign-out-alt fa-2x"></span></router-link>
-            </li>
-          </ul>
-          <img class="avatar" :src="getLogedUser.avatar" alt="">
-        </div>
-      </div>
+        <router-link class="nav-link" to="#"><span class="fas fa-home fa-2x"></span></router-link>
+        <router-link class="nav-link" to="#"><span class="fas fa-bell fa-2x"></span></router-link>
+        <router-link class="nav-link" to="#"><span class="fas fa-comments fa-2x"></span></router-link>
+        <button class="nav-link nav-button" @click="logout"><span class="fa fa-sign-out-alt fa-2x"></span></button>
+        <router-link class="navbar-brand" to="#"><img  :src="getLogedUser.avatar" alt=""></router-link>
       </nav>
 </template>
 
@@ -33,6 +15,12 @@ export default {
 
   computed: {
     ...mapGetters(["getLogedUser"])
+  },
+  methods:{
+    logout: function (){
+      let confirmation = window.confirm('Voulez-vous vraiment vous déconnecter ? ')
+      confirmation ? this.$router.push({name:'Logout'}) : null
+    }
   }
 
 }
@@ -42,13 +30,33 @@ export default {
   .navbar{
     background-color: #ffd7d7;
     padding: 0;
-  }
-  img{
-      width: 45px;
-      padding: 0;
-      margin: 0;
-      border-radius: 50%;
+    position: fixed;
+    left: 0;
+    height: 100vh;
+    width: 5%;
+    max-width: 5em;
+    padding: 2em 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    a, button{
+      text-decoration: none;
+      color: gray;
+      &:hover{
+        color: #f35252;
+      }
+      img{
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        margin: 0;
+        border-radius: 50%;
+      }
     }
+  }
+
+  
     button{
       border-radius: 3em;
     }
@@ -57,6 +65,10 @@ export default {
       color: rgb(33, 33, 247);
       margin-right: 1em;
       font-size: .7em ;
+      &.nav-button{
+        background-color: transparent;
+        border: none;
+      }
     }
     form input{
       background-color: transparent;

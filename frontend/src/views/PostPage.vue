@@ -1,9 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="posts" v-for="post in getPosts" :key="post.id">
       <post :post="post"/>
     </div>
-
   </div>
 </template>
 
