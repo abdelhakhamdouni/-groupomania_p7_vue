@@ -1,7 +1,7 @@
 <template>
       <nav class="navbar">
-        <router-link class="navbar-brand" to="#"><img src="@/assets/logos/icon.svg" class="img-fluid" alt=""></router-link>
-        <router-link class="nav-link" to="#"><span class="fas fa-home fa-2x"></span></router-link>
+        <router-link class="navbar-brand" to="/"><img src="@/assets/logos/icon.svg" class="img-fluid" alt=""></router-link>
+        <router-link class="nav-link" to="/"><span class="fas fa-home fa-2x"></span></router-link>
         <router-link class="nav-link" to="#"><span class="fas fa-bell fa-2x"></span></router-link>
         <router-link class="nav-link" to="#"><span class="fas fa-comments fa-2x"></span></router-link>
         <button class="nav-link nav-button" @click="logout"><span class="fa fa-sign-out-alt fa-2x"></span></button>

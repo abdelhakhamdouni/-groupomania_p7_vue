@@ -19,8 +19,6 @@
                 class="form-control"
                 required
               />
-            </div>
-            <div class="form-group">
               <label for="password">Prénom</label>
               <input
                 type="text"
@@ -52,8 +50,7 @@
                 class="form-control"
                 required
               />
-            </div>
-            <div class="form-group">
+
               <label for="password">Mot de passe</label>
               <input
                 v-bind:type="passType"
@@ -144,8 +141,8 @@ export default {
 }
 .container,
 .row {
-  height: 80vh;
-  margin: auto;
+  height: 100vh;
+  margin: unset;
   .col-md-6 {
     height: 100%;
     margin: 0;
@@ -157,7 +154,7 @@ export default {
       border: 1px solid #999;
     }
     img {
-      height: 100%;
+      height: 100vh;
       width: 100%;
       object-fit: cover;
     }
@@ -185,7 +182,7 @@ export default {
         align-items: center;
         flex-direction: column;
         width: 100%;
-        padding: 0 1em;
+        padding: 0 .5em;
         label {
           align-self: flex-start;
         }
@@ -201,7 +198,7 @@ export default {
         }
       }
       .btn {
-        margin-top: 1em;
+        margin-top: .5em;
         border-radius: 3em;
       }
     }

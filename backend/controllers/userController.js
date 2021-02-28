@@ -94,7 +94,7 @@ module.exports = {
             (err, resultat) => {
               console.log(resultat);
               if (!resultat) {
-                res.status(403);
+                res.status(200);
                 res.json({ err: "impossible de trouver cet utilisateur !" });
               } else {
                 req.body.email = user[0].email;

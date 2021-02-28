@@ -1,8 +1,5 @@
 <template>
   <div class="home">
-    <h5 class="py-3">
-      Tous les publications
-    </h5>
       <post-form />
       <post-page />
   </div>
@@ -42,15 +39,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.home{
-  width: 45%;
-  position: absolute;
-  left: 30%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  .home{
+    width: 45%;
+    position: absolute;
+    left: 30%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 0;
 
-}
+  }
   .posts__list{
     margin-top: 4em;
   }

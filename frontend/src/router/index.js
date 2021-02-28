@@ -27,6 +27,11 @@ const routes = [
     path: '/logout',
     name: 'Logout',
     component: () => import('../views/Logout.vue')
+  },
+  {
+    path: '/post/:id',
+    name: 'PostSingle',
+    component: () => import('../views/PostSingle.vue')
   }
 ]
 

@@ -159,7 +159,10 @@ module.exports = {
   //add poste to server and bdd
   addPost: async (req, res) => {
     req.body.post = JSON.parse(req.body.post);
-    let fileName = `/images/${req.file.filename}`;
+      let fileName = null
+    if(req.file){
+         fileName = `/images/${req.file.filename}`;
+    }
     const conn = await db;
     query(conn, querysStrings.createPost, [
       req.body.post.title || null,

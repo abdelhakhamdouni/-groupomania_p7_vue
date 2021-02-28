@@ -16,9 +16,11 @@
       </ul>
     </header>
     <div class="post__title">{{post.title}}</div>
-    <div class="post__body">
+    <router-link :to="`post/${post.id}`" class="post__body">
       <img :src="post.image" alt="">
-    </div>
+      <p class="text-left px-3">{{post.description}}</p>
+    </router-link>
+
     <footer class="post__footer">
       <span class="far fa-thumbs-up fa-2x"></span>
       <span class="far fa-comment-alt fa-2x"></span>
@@ -81,6 +83,7 @@ export default {
 .post{
   box-shadow: 0 0 8px lightgray;
   border-radius: 5px;
+
   //margin: 1em;
   margin-bottom: 1em;
   .post__header{
@@ -182,11 +185,20 @@ export default {
     margin: .5em;
   }
   .post__body{
+    text-decoration: none;
+    color: gray;
     width: 100%;
     margin: 0;
     padding: 0;
     img{
       width: 100%;
+      margin-bottom: 1em;
+    }
+    p{
+      max-height: 5em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
   .post__footer{
