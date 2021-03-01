@@ -13,7 +13,7 @@
               <ul class="post__menu">
                   <li @click="signaler">Signaler <span class="fa fa-exclamation-triangle"></span></li>
                   <li>Sauvgarder <span class="fa fa-save"></span></li>
-                  <li>Supprimer <span class="fa fa-trash"></span></li>
+                  <li @click="deletePost">Supprimer <span class="fa fa-trash"></span></li>
               </ul>
           </header>
           <div class="post__title">{{getPost.title}}</div>
@@ -22,7 +22,9 @@
               <p class="text-left px-3">{{getPost.description}}</p>
           </div>
           <footer class="post__footer">
-              <span class="far fa-thumbs-up fa-2x"></span>
+              <div class="likes">
+                <span :class="isPostLiked ?  'fas fa-thumbs-up fa-2x text-primary': 'far fa-thumbs-up fa-2x text-primmary'" ></span> <span>{{getPost.likeList.length}}</span>
+              </div>
               <span class="far fa-comment-alt fa-2x"></span>
           </footer>
 
@@ -36,14 +38,30 @@ import axios from 'axios'
 import moment from "moment";
 import { mapActions, mapGetters } from 'vuex'
 export default {
+    name: 'PostSingle',
   components: {  },
+    data(){
+      return {
+          id: ""
+      }
+    },
     computed: {
-        ...mapGetters(['getPost']),
+        ...mapGetters(['getPost', 'getLogedUser']),
+        isPostLiked: function () {
+            let youLiked = false
+            console.log(this.getPost.likeList)
+            this.getPost.likeList.forEach(like =>{
+                if(like.UserId === this.getLogedUser.id){
+                    youLiked = true
+                }
+            })
+            return youLiked
+        }
     },
     mounted() {
-      const id = this.$route.params.id
+      this.id = this.$route.params.id
       axios
-        .get(`http://localhost:8000/api/posts/post/${id}`,
+        .get(`http://localhost:8000/api/posts/post/${this.id}`,
             {
                 timeout: 1000,
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
@@ -88,7 +106,38 @@ export default {
             modal_bg.addEventListener('click', function(){
                 document.querySelector('body').removeChild(this)
             })
+        },
+        deletePost: function () {
+            let id = this.getPost.id
+            axios.delete(`http://localhost:8000/api/posts/${id}`, {
+                headers: {
+                    Authorization : `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(()=>{
+               this.$router.push({name: 'Home'})
+            })
+            .catch(err => console.log(err))
+
         }
+    },
+    watch: {
+      id: function () {
+      this.id = this.$route.params.id
+      axios
+          .get(`http://localhost:8000/api/posts/post/${this.id}`,
+              {
+                  timeout: 1000,
+                  headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+              })
+          .then(response=>{
+              console.log(response.data)
+              moment.locale('fr');
+              let poste = response.data
+              poste.createdAt = moment(poste.createdAt).fromNow()
+              this.setPost(poste)
+          })
+      }
     }
 }
 </script>
@@ -102,6 +151,9 @@ export default {
         align-items: center;
         flex-direction: column;
         padding-top: 0;
+        border-left: 1px solid #adadad;
+        border-right: 1px solid #adadad;
+        min-height: 100vh;
     }
     .post{
         //box-shadow: 0 0 8px lightgray;

@@ -1,11 +1,19 @@
 <template>
   <form class="form">
     <img :src="getLogedUser.avatar" alt="avatar">
-    <textarea type="text" class="postBody" placeholder="Ecrivez quleque chose..." v-model="content"></textarea>
+    <div v-if="success" class="alert alert-success">
+      {{success}}
+    </div>
+    <textarea type="text" class="postBody" placeholder="Ecrivez quleque chose..." v-model="content" @focus="success = false"></textarea>
     <div class="form-footer">
       <div class="media">
-        <label for="form-image" class="form-image"><span class="fa fa-image fa-2x"></span> Image</label>
-        <input @change="logImageFile" type="file" id="form-image">
+        <div v-if="!url">
+          <label for="form-image" class="form-image"><span class="fa fa-image fa-2x"></span> Image</label>
+          <input @change="setImageFile" type="file" id="form-image">
+        </div>
+        <div v-if="url">
+          <img class="imagePreview" :src="url" width="100px" />
+        </div>
       </div>
         <button @click="submitPost" type="submit">Publier</button>
     </div>
@@ -19,13 +27,16 @@ export default {
   data() {
     return {
       content:"",
-      image: ""
+      image: "",
+      success: "",
+      url: ""
     }
   },
   methods: {
     ...mapActions(["setPosts"]),
 
     submitPost : function (event) {
+      this.success = ""
       event.preventDefault()
       console.log(this.image, this.content)
       if(!this.content && !this.image) return
@@ -48,17 +59,22 @@ export default {
               Authorization : `Bearer ${localStorage.getItem('token')}`
             }
           })
-                  .then(reponse=> {
-                    this.posts = reponse.data
-                    console.log(reponse.data)
-                    this.setPosts(reponse.data)
-                  } )
-                  .catch(err => console.log(err))
+          .then(reponse=> {
+            this.success = "Votre publication est en ligne !"
+            this.content = ""
+            this.image = ""
+            this.url = ""
+            this.posts = reponse.data
+            console.log(reponse.data)
+            this.setPosts(reponse.data)
+          } )
+          .catch(err => console.log(err))
         })
     },
-    logImageFile: function (event) {
+    setImageFile: function (event) {
       this.image = event.target.files[0]
-    }
+      this.url = URL.createObjectURL(this.image);
+      }
   },
   computed: {
       ...mapGetters(['getLogedUser']),
@@ -114,6 +130,13 @@ export default {
         border: 1px solid blueviolet;
         border-radius: 2em;
         padding: 0em 1.5em;
+        height: 2em !important;
+      }
+      div .imagePreview{
+        width: 100px !important;
+        height: 100px !important;
+        object-fit: cover;
+        border-radius: 0;
       }
       .form-image {
         display: inline-flex;

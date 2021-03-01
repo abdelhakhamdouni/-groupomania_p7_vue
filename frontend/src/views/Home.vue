@@ -47,6 +47,8 @@ export default {
     align-items: center;
     flex-direction: column;
     padding-top: 0;
+      border-left: 1px solid #adadad;
+      border-right: 1px solid #adadad;
 
   }
   .posts__list{

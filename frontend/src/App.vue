@@ -3,7 +3,7 @@
     <div v-if="isUserLogged">
       <status-bar />
       <last-posts />
-      <my-last-posts />
+      <users-list />
     </div>
       <main class="main">
         <router-view/>
@@ -16,9 +16,9 @@
   import axios from "axios"
   import StatusBar from './components/StatusBar.vue'
 import LastPosts from './components/LastPosts.vue'
-import MyLastPosts from './components/MyLastPosts.vue'
+  import UsersList from "./components/UsersList";
   export default {
-    components: { StatusBar, LastPosts, MyLastPosts },
+    components: {UsersList, StatusBar, LastPosts },
     computed:{
 
       ...mapGetters(['isUserLogged'])
@@ -73,4 +73,5 @@ body{
 body, #app{
   min-height: 100vh;
 }
+
 </style>

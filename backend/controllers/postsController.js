@@ -202,7 +202,9 @@ module.exports = {
     });
     query(conn, querysStrings.getPostById, [id])
       .then((post) => {
-        unlinkAsync(path.join("../backend/", post[0].image)); //suprimer l'image puis poste du serveur
+          if(post.image){
+                unlinkAsync(path.join("../backend/", post[0].image)); //suprimer l'image puis poste du serveur
+          }
       })
       .catch((err) => {
         console.log("132", err);

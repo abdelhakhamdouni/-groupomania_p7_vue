@@ -12,17 +12,19 @@
       <ul class="post__menu">
         <li @click="signaler">Signaler <span class="fa fa-exclamation-triangle"></span></li>
         <li>Sauvgarder <span class="fa fa-save"></span></li>
-        <li>Supprimer <span class="fa fa-trash"></span></li>
+        <li @click="deletePost "> Supprimer <span class="fa fa-trash"></span></li>
       </ul>
     </header>
     <div class="post__title">{{post.title}}</div>
-    <router-link :to="`post/${post.id}`" class="post__body">
+    <router-link :to="`/post/${post.id}`" class="post__body">
       <img :src="post.image" alt="">
       <p class="text-left px-3">{{post.description}}</p>
     </router-link>
 
     <footer class="post__footer">
-      <span class="far fa-thumbs-up fa-2x"></span>
+      <div class="likes">
+        <span :class="isPostLiked ?  'fas fa-thumbs-up fa-2x text-primary': 'far fa-thumbs-up fa-2x text-primmary'" ></span> <span>{{post.likeList.length}}</span>
+      </div>
       <span class="far fa-comment-alt fa-2x"></span>
     </footer>
   </article>
@@ -30,20 +32,31 @@
 
 <script>
 import moment from 'moment'
+import {mapActions, mapGetters} from "vuex";
+import axios from "axios";
 export default {
   props: {post: {
     type: Object
   }},
   computed: {
-    createdAt(){
+    ...mapGetters(['getLogedUser']),
+    createdAt() {
       moment.locale('fr');
       return moment(this.post.createdAt).fromNow()
-      }    
+    },
+    isPostLiked: function () {
+      let youLiked = false
+      console.log(this.getLogedUser.id)
+      this.post.likeList.forEach(like => {
+        if (like.UserId === this.getLogedUser.id) {
+          youLiked = true
+        }
+      })
+      return youLiked
+    }
   },
-  created(){
-    
-  },
-  methods:{
+  methods: {
+    ...mapActions(["setPosts"]),
     signaler: function(){
       let modal_bg = document.createElement('div')
       modal_bg.style.width = "100vw"
@@ -74,6 +87,28 @@ export default {
       modal_bg.addEventListener('click', function(){
         document.querySelector('body').removeChild(this)
       })
+    },
+    deletePost: function () {
+        let id = this.post.id
+        axios.delete(`http://localhost:8000/api/posts/${id}`, {
+          headers: {
+            Authorization : `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+        .then(()=>{
+          axios.get("http://localhost:8000/api/posts", {
+            headers: {
+              Authorization : `Bearer ${localStorage.getItem('token')}`
+            }
+          })
+          .then(response=> {
+            console.log(response)
+            this.posts = response.data
+            this.setPosts(response.data)
+          })
+        })
+      .catch(err => console.log(err))
+
     }
   }
 }
