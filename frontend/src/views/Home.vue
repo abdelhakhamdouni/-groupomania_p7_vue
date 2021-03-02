@@ -1,57 +1,58 @@
 <template>
   <div class="home">
-      <post-form />
-      <post-page />
+    <post-form />
+    <post-page />
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import { mapActions } from 'vuex'
-import PostPage from './PostPage.vue'
-import PostForm from '../components/PostForm.vue'
+import axios from "axios";
+import { mapActions } from "vuex";
+import PostPage from "./PostPage.vue";
+import PostForm from "../components/PostForm.vue";
 // @ is an alias to /src
 
 export default {
-  components: { PostPage, PostForm},
-  name: 'Home',
-  data(){
+  components: { PostPage, PostForm },
+  name: "Home",
+  data() {
     return {
-      posts: []
-    }
+      posts: [],
+    };
   },
   methods: {
-    ...mapActions(["setPosts"])
+    ...mapActions(["setPosts"]),
   },
-  created(){
-    axios.get("http://localhost:8000/api/posts", {
-      headers: {
-        Authorization : `Bearer ${localStorage.getItem('token')}`
-      }
-    })
-    .then(reponse=> {
-      this.posts = reponse.data
-      console.log(reponse.data)
-      this.setPosts(reponse.data)
-      } )
-    .catch(err => console.log(err))
-  }
-}
+  created() {
+    axios
+      .get("http://localhost:8000/api/posts", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((reponse) => {
+        this.posts = reponse.data;
+        console.log(reponse.data);
+        this.setPosts(reponse.data);
+      })
+      .catch((err) => console.log(err));
+  },
+};
 </script>
 <style lang="scss" scoped>
-  .home{
-    width: 45%;
-    position: absolute;
-    left: 30%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 0;
-      border-left: 1px solid #adadad;
-      border-right: 1px solid #adadad;
-
-  }
-  .posts__list{
-    margin-top: 4em;
-  }
+.home {
+  min-height: 100vh;
+  width: 45%;
+  position: absolute;
+  left: 30%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 0;
+  border-left: 1px solid #adadad;
+  border-right: 1px solid #adadad;
+}
+.posts__list {
+  margin-top: 4em;
+}
 </style>

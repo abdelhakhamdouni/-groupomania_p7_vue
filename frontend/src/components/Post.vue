@@ -128,7 +128,6 @@ export default {
     padding: 1em;
     padding-bottom: 0;
     position: relative;
-
     .menu{
       position: absolute;
       border: none;
@@ -160,7 +159,7 @@ export default {
         background-color: #fff;
         align-items: flex-start;
         padding: 1em;
-        box-shadow: 0 0 10px gray;
+        box-shadow: 0 0 20px rgb(211, 211, 211);
         width: 50%;
         z-index: 10;
         &::after{
@@ -189,8 +188,8 @@ export default {
     }
     .post__header-image{
       img{
-        width: 3.2em;
-        height: 3.2em;
+        width: 3em;
+        height: 3em;
         object-fit: cover;
         object-position: center;
         border-radius: 50%;
@@ -242,6 +241,7 @@ export default {
     align-items: center;
     padding: 1em 2em;
     font-size: .7em;
+    box-shadow: 0 -2px 5px rgb(223, 223, 223);
     span{
       cursor: pointer;
       

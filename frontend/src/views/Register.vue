@@ -29,9 +29,13 @@
                 required
               />
             </div>
-             <div class="form-group">
-              <img id="avatarPreview" alt="">
-              <label for="avatar" class="btn btn-outline-warning align-self-center">Image de profil</label>
+            <div class="form-group">
+              <img id="avatarPreview" alt="" />
+              <label
+                for="avatar"
+                class="btn btn-outline-warning align-self-center"
+                >Image de profil</label
+              >
               <input
                 type="file"
                 placeholder="Jean"
@@ -96,29 +100,32 @@ export default {
   methods: {
     ...mapActions(["logUser"]),
     setAvatar: function (event) {
-        this.avatar = event.target.files[0]
-        const reader = new FileReader();
-        reader.onload = function (e) {
-        let avatarPreview = document.querySelector('#avatarPreview')
-        avatarPreview.style.display = "block"
-        avatarPreview.src = e.target.result
-        this.avatar = event.target.files[0]
-      }
-        reader.readAsDataURL(event.target.files[0]);
+      this.avatar = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        let avatarPreview = document.querySelector("#avatarPreview");
+        avatarPreview.style.display = "block";
+        avatarPreview.src = e.target.result;
+        this.avatar = event.target.files[0];
+      };
+      reader.readAsDataURL(event.target.files[0]);
     },
     register: function () {
-      let formData = new FormData()
-      formData.append('user', JSON.stringify({ 
-                                firstName: this.firstName,
-                                lastName: this.lastName,
-                                email: this.email,
-                                password: this.password
-                              }));
+      let formData = new FormData();
+      formData.append(
+        "user",
+        JSON.stringify({
+          firstName: this.firstName,
+          lastName: this.lastName,
+          email: this.email,
+          password: this.password,
+        })
+      );
       if (this.avatar !== null) {
         formData.append("image", this.avatar || null);
       }
-      axios.post("http://localhost:8000/api/auth/signup",formData
-        )
+      axios
+        .post("http://localhost:8000/api/auth/signup", formData)
         .then((response) => {
           console.log(response);
           if (response.status === 201) {
@@ -182,7 +189,7 @@ export default {
         align-items: center;
         flex-direction: column;
         width: 100%;
-        padding: 0 .5em;
+        padding: 0 0.5em;
         label {
           align-self: flex-start;
         }
@@ -192,13 +199,13 @@ export default {
             color: gray;
           }
         }
-        img{
+        img {
           display: none;
           margin: 0;
         }
       }
       .btn {
-        margin-top: .5em;
+        margin-top: 0.5em;
         border-radius: 3em;
       }
     }

@@ -11,9 +11,9 @@ module.exports = {
     UpdateUserInfo: "UPDATE users SET firstName = ?, lastName = ? WHERE id = ?",
     
     //strings for post querys
-    createPost: "INSERT INTO posts(title, image, description, type, UserId, createdAt,userPseudo) VALUE(?,?,?,?,?,now(),?)",
+    createPost: "INSERT INTO posts(title, image, description, type, UserId, createdAt,updatedAt,userPseudo) VALUE(?,?,?,?,?,now(),now(),?)",
     getPosts : `SELECT posts.*, users.avatar FROM posts,users WHERE posts.UserId = users.id ORDER BY updatedAt DESC`,
-    getLastsPostsByUserId : "SELECT id, image FROM posts ORDER BY createdAt DESC LIMIT 5",
+    getLastsPostsByUserId : "SELECT id, image, description FROM posts ORDER BY createdAt DESC LIMIT 5",
     getAllPostsWithUserId: "SELECT posts.*, users.avatar FROM posts, users WHERE posts.UserId = users.id AND users.id = ?",
     getCountAllPostsByUserId : "SELECT posts.*, users.avatar FROM posts, users WHERE posts.UserId = users.id AND users.id = ?",
     getPostById : "SELECT posts.*, users.avatar FROM posts, users WHERE posts.UserId = users.id AND posts.id = ?",

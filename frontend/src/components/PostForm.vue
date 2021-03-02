@@ -2,7 +2,12 @@
   <form class="form">
     <img :src="getLogedUser.avatar" alt="avatar">
     <div v-if="success" class="alert alert-success">
+      <span class="close fa fa-times" @click="success = false"></span>
       {{success}}
+    </div>
+    <div v-if="error" class="alert alert-warning">
+      <span class="close fa fa-times" @click="error = false"></span>
+      {{error}}
     </div>
     <textarea type="text" class="postBody" placeholder="Ecrivez quleque chose..." v-model="content" @focus="success = false"></textarea>
     <div class="form-footer">
@@ -29,7 +34,8 @@ export default {
       content:"",
       image: "",
       success: "",
-      url: ""
+      url: "",
+      error:""
     }
   },
   methods: {
@@ -39,7 +45,10 @@ export default {
       this.success = ""
       event.preventDefault()
       console.log(this.image, this.content)
-      if(!this.content && !this.image) return
+      if(!this.content && !this.image){
+        this.error = "Vous ne pouvez pas publier un poste vide, enfin ça n'a pas de sense :)"
+        return
+      }
         let formData = new FormData()
         let post = {}
         post.authorId = this.getLogedUser.id

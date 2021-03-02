@@ -19,6 +19,7 @@ export default {
     ...mapGetters(['getLogedUser']),
     createdAt() {
       moment.locale('fr');
+      console.log(this.post)
       return moment(this.post.createdAt).fromNow()
     },
   },
@@ -56,11 +57,15 @@ export default {
       object-fit: cover;
       object-position: top;
     }
+    span{
+      color: #ff5656;
+    }
     p{
       max-height: 5em;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      font-size: 14px;
     }
   }
 }
