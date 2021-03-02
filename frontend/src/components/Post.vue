@@ -23,7 +23,7 @@
 
     <footer class="post__footer">
       <div class="likes">
-        <span :class="isPostLiked ?  'fas fa-thumbs-up fa-2x text-primary': 'far fa-thumbs-up fa-2x text-primmary'" ></span> <span>{{post.likeList.length}}</span>
+        <span :class="isPostLiked ?  'fas fa-thumbs-up fa-2x text-primary': 'far fa-thumbs-up fa-2x text-primmary'" @click="likePost" ></span> <span>{{postLength}}</span>
       </div>
       <span class="far fa-comment-alt fa-2x"></span>
     </footer>
@@ -38,6 +38,11 @@ export default {
   props: {post: {
     type: Object
   }},
+  data(){
+    return {
+      youLikedPost: '',
+    }
+  },
   computed: {
     ...mapGetters(['getLogedUser']),
     createdAt() {
@@ -45,13 +50,16 @@ export default {
       return moment(this.post.createdAt).fromNow()
     },
     isPostLiked: function () {
-      let youLiked = false
       this.post.likeList.forEach(like => {
         if (like.UserId === this.getLogedUser.id) {
-          youLiked = true
+          this.youLikedPost = true
         }
       })
-      return youLiked
+      return this.youLikedPost
+    },
+    postLength : function(){
+      
+        return this.youLikedPost ?  this.post.likeList.length + 1 : this.post.likeList.length
     }
   },
   methods: {
@@ -107,7 +115,21 @@ export default {
         })
       .catch(err => console.log(err))
 
-    }
+    },
+    likePost: function(){
+      let data = {
+        userId : this.getLogedUser.id
+      }
+      axios.post(`http://localhost:8000/api/likes/${this.post.id}/${!this.youLikedPost ? 1 : 0}`, data, {
+          timeout: 1000,
+          headers: { Authorization: "Bearer " + window.localStorage.getItem('token') },
+        })
+        .then(()=>{
+          this.youLikedPost = !this.youLikedPost
+          
+        })
+      }
+    
   }
 }
 </script>
