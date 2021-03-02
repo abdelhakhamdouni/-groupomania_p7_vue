@@ -17,7 +17,6 @@ export default {
   computed: {
     ...mapGetters(["getPosts"]),
     posts: function(){
-      console.log(this.getPosts.length)
       return this.getPosts.length
     }
   },

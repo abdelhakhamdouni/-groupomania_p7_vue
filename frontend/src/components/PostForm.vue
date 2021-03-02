@@ -44,7 +44,6 @@ export default {
     submitPost : function (event) {
       this.success = ""
       event.preventDefault()
-      console.log(this.image, this.content)
       if(!this.content && !this.image){
         this.error = "Vous ne pouvez pas publier un poste vide, enfin ça n'a pas de sense :)"
         return
@@ -74,7 +73,6 @@ export default {
             this.image = ""
             this.url = ""
             this.posts = reponse.data
-            console.log(reponse.data)
             this.setPosts(reponse.data)
           } )
           .catch(err => console.log(err))

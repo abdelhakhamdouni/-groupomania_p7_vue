@@ -46,7 +46,6 @@ export default {
     },
     isPostLiked: function () {
       let youLiked = false
-      console.log(this.getLogedUser.id)
       this.post.likeList.forEach(like => {
         if (like.UserId === this.getLogedUser.id) {
           youLiked = true
@@ -102,7 +101,6 @@ export default {
             }
           })
           .then(response=> {
-            console.log(response)
             this.posts = response.data
             this.setPosts(response.data)
           })

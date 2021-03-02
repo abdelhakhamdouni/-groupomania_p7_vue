@@ -32,7 +32,6 @@ export default {
       })
       .then((reponse) => {
         this.posts = reponse.data;
-        console.log(reponse.data);
         this.setPosts(reponse.data);
       })
       .catch((err) => console.log(err));

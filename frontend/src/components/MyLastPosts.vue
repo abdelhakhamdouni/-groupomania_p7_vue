@@ -31,7 +31,6 @@ export default {
     })
     .then(reponse=> {
       this.myPosts = reponse.data
-      console.log(reponse.data)
     } )
     .catch(err => console.log(err))
   }

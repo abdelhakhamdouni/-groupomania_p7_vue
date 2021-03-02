@@ -31,8 +31,7 @@ export default {
     })
     .then(reponse=> {
       this.users = reponse.data.users
-      console.log(reponse.data)
-    } )
+    })
     .catch(err => console.log(err))
   }
 }

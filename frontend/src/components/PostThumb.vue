@@ -19,7 +19,6 @@ export default {
     ...mapGetters(['getLogedUser']),
     createdAt() {
       moment.locale('fr');
-      console.log(this.post)
       return moment(this.post.createdAt).fromNow()
     },
   },

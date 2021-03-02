@@ -24,9 +24,6 @@
                 return moment(this.user.createdAt).fromNow()
             },
         },
-        created() {
-            console.log(this.user)
-        }
     }
 </script>
 

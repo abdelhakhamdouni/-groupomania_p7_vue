@@ -31,7 +31,6 @@
       })
               .then(reponse=> {
                 this.lastPosts = reponse.data
-                console.log(reponse.data)
               } )
               .catch(err => console.log(err))
     }

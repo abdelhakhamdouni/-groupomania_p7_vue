@@ -127,7 +127,6 @@ export default {
       axios
         .post("http://localhost:8000/api/auth/signup", formData)
         .then((response) => {
-          console.log(response);
           if (response.status === 201) {
             this.$router.push({ name: "Login" });
           }

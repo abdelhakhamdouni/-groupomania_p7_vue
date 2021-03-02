@@ -64,7 +64,6 @@ export default {
     ...mapGetters(["getPost", "getLogedUser"]),
     isPostLiked: function () {
       let youLiked = false;
-      console.log(this.getPost.likeList);
       this.getPost.likeList.forEach((like) => {
         if (like.UserId === this.getLogedUser.id) {
           youLiked = true;
@@ -81,7 +80,6 @@ export default {
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
       })
       .then((response) => {
-        console.log(response.data);
         moment.locale("fr");
         let poste = response.data;
         poste.createdAt = moment(poste.createdAt).fromNow();
@@ -144,7 +142,6 @@ export default {
           headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         })
         .then((response) => {
-          console.log(response.data);
           moment.locale("fr");
           let poste = response.data;
           poste.createdAt = moment(poste.createdAt).fromNow();
