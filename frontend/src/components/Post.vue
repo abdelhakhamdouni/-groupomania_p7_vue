@@ -63,7 +63,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["setPosts"]),
+    ...mapActions(["setPosts", "setLastPosts"]),
     signaler: function(){
       let modal_bg = document.createElement('div')
       modal_bg.style.width = "100vw"
@@ -109,12 +109,21 @@ export default {
             }
           })
           .then(response=> {
+            axios.get(`http://localhost:8000/api/posts/lasts`, {
+            headers: {
+              Authorization : `Bearer ${localStorage.getItem('token')}`
+            }
+          })
+          .then(reponse=> {
+            this.setLastPosts(reponse.data)
+          } )
+        .catch(err => console.log(err))
             this.posts = response.data
             this.setPosts(response.data)
           })
         })
       .catch(err => console.log(err))
-
+       
     },
     likePost: function(){
       let data = {

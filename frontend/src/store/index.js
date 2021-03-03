@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const state = {
   userLogged: false,
   posts:[],
+  lastPosts: [],
   user: {},
   post: null
 };
@@ -16,6 +17,9 @@ const getters = {
   }, 
   getPosts: ()=>{
     return state.posts
+  },
+  getLastPosts: ()=>{
+    return state.lastPosts
   },
   getPost: ()=>{
     return state.post
@@ -32,6 +36,9 @@ const mutations = {
   SET_POSTS: (state, posts) => {
     state.posts = posts
   },
+  SET_LAST_POSTS: (state, posts) => {
+    state.lastPosts = posts
+  },
   SET_POST: (state, post) => {
     state.post = post
   },
@@ -47,6 +54,9 @@ const actions = {
    setPosts: ({commit}, posts) => {
      commit("SET_POSTS", posts)
    },
+   setLastPosts: ({commit}, posts) => {
+    commit("SET_LAST_POSTS", posts)
+  },
   setPost: ({commit}, post) => {
     commit("SET_POST", post)
   },

@@ -40,6 +40,7 @@ export default {
   },
   methods: {
     ...mapActions(["setPosts"]),
+    ...mapActions(['setLastPosts']),
 
     submitPost : function (event) {
       this.success = ""
@@ -68,6 +69,14 @@ export default {
             }
           })
           .then(reponse=> {
+             axios.get(`http://localhost:8000/api/posts/lasts`, {
+                headers: {
+                  Authorization : `Bearer ${localStorage.getItem('token')}`
+                }
+              })
+              .then(reponse=> {
+                this.setLastPosts(reponse.data)
+              } )
             this.success = "Votre publication est en ligne !"
             this.content = ""
             this.image = ""

@@ -3,14 +3,14 @@
     <h5 class="pt-3">
       Les dernieres  publications
     </h5>
-    <div class="posts" v-for="post in lastPosts" :key="post.id">
+    <div class="posts" v-for="post in getLastPosts" :key="post.id">
       <post-thumb :post="post"/>
     </div>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
   import axios from 'axios'
   import PostThumb from "./PostThumb";
   export default {
@@ -20,8 +20,11 @@
         lastPosts: []
       }
     },
+    computed: {
+      ...mapGetters(['getLogedUser', 'getLastPosts']),
+    },
     methods: {
-      ...mapGetters(['getLogedUser']),
+      ...mapActions(['setLastPosts'])
     },
     created() {
       axios.get(`http://localhost:8000/api/posts/lasts`, {
@@ -29,10 +32,10 @@
           Authorization : `Bearer ${localStorage.getItem('token')}`
         }
       })
-              .then(reponse=> {
-                this.lastPosts = reponse.data
-              } )
-              .catch(err => console.log(err))
+      .then(reponse=> {
+        this.setLastPosts(reponse.data)
+      } )
+      .catch(err => console.log(err))
     }
   }
 </script>
