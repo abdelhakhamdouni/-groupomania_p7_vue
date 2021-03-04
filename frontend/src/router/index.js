@@ -32,6 +32,11 @@ const routes = [
     path: '/post/:id',
     name: 'PostSingle',
     component: () => import('../views/PostSingle.vue')
+  },
+  {
+    path: '/profile/:id',
+    name: 'Profile',
+    component: () => import('../views/Profile.vue')
   }
 ]
 

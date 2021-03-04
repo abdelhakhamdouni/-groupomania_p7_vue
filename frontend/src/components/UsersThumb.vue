@@ -1,12 +1,12 @@
 <template>
-    <div class="userThumb">
+    <router-link :to="`/profile/${user.id}`" class="userThumb">
         <img v-if="user.avatar != 'http://localhost:8000null'" :src="user.avatar" alt="">
         <div class="metadat">
             <h5>{{user.firstName}} {{user.lastName}}</h5>
             <h6>A rejoint depuis {{createdAt}}</h6>
         </div>
 
-    </div>
+    </router-link>
 </template>
 
 <script>
@@ -38,6 +38,8 @@
         border-radius: 1em;
         height: 3.5em;
         overflow: hidden;
+        text-decoration: none;
+        color: rgb(77, 77, 77);
         img{
             width: 3.5em;
             height: 100%;

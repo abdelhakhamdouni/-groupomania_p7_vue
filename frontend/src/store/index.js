@@ -8,6 +8,7 @@ const state = {
   posts:[],
   lastPosts: [],
   user: {},
+  profile: {},
   post: null
 };
 
@@ -26,6 +27,9 @@ const getters = {
   },
   getLogedUser: ()=>{
     return state.user
+  },
+  getProfile: ()=>{
+    return state.profile
   }
 };
 
@@ -44,6 +48,9 @@ const mutations = {
   },
   SET_USER_DATA: (state, user)=>{
     state.user = user
+  },
+  SET_PROFILE: (state, profile)=>{
+    state.profile = profile
   }
 };
 
@@ -62,6 +69,9 @@ const actions = {
   },
   setUserData: ({commit}, user)=>{
     commit('SET_USER_DATA', user)
+  },
+  setProfile: ({commit,}, profile)=>{
+    commit('SET_PROFILE', profile)
   }
 };
 
