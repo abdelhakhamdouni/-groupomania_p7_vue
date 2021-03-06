@@ -5,6 +5,9 @@
             <h5>{{user.firstName}} {{user.lastName}}</h5>
             <h6>A rejoint depuis {{createdAt}}</h6>
         </div>
+        <div class="user-star" v-if="user.roles.includes('ROLE_ADMIN')">
+            <span class="fa fa-shield-alt" title="Badge administrateur / modérateur"></span>
+        </div>
 
     </router-link>
 </template>
@@ -61,6 +64,12 @@
         h6{
             font-size: 12px;
             margin-left: 1em;
+        }
+        .user-star{
+            justify-self: flex-end;
+            flex: 1;
+            text-align: right;
+            color: #f35252;
         }
     }
 

@@ -1,7 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
 import Login from '@/views/Login.vue';
-import sinon from 'sinon'
-import axios  from "axios";
 
 describe('login page', ()=>{
     test('load login page with no error', ()=>{
@@ -10,15 +8,16 @@ describe('login page', ()=>{
         })
         expect(wrapper.find('.error').exists()).toBe(false);
     });
-     test('login to account', async ()=>{
-
+     test('login called', async ()=>{
          const wrapper = shallowMount(Login, {
-             stubs: ['router-link']
+             stubs: ['router-link'],
          })
 
-         wrapper.find('button').trigger('click')
+         const _login = await jest.spyOn(wrapper.vm, 'login')
+         const btn = wrapper.find('form')
+         btn.trigger('submit')
 
-         expect(wrapper.text()).toContain('error')
+         expect(_login).toHaveBeenCalled()
     })
 
 });

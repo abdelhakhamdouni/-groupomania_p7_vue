@@ -6,7 +6,7 @@
           <img src="@/assets/img/login-bg.jpg" alt="image abstract" />
         </div>
         <div class="col-md-6">
-          <form @submit.prevent="login">
+          <form @submit.prevent="login" novalidate>
             <img src="@/assets/logos/icon-above-font.svg" alt="logo du site" />
             <h2>Me connecter</h2>
             <div v-if="error" class="alert alert-warning">
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import axios from "axios";
+  import {login} from '@/helpers/api/request.js'
 import { mapActions } from "vuex";
 export default {
   name: "Login",
@@ -71,30 +71,7 @@ export default {
   methods: {
     ...mapActions(["logUser"]),
     login: function () {
-      this.error = "";
-      axios
-        .post("http://localhost:8000/api/auth/login", {
-          email: this.email,
-          password: this.password,
-        })
-        .then((response) => {
-          if (
-            response.status === 200 &&
-            response.data.token &&
-            response.err === undefined
-          ) {
-            this.logUser(true);
-            localStorage.setItem("token", response.data.token);
-            this.$router.push({ name: "Home" });
-          } else {
-            this.error = "Votre email ou mot de passe est incorrécte";
-            this.shwoForgetPassword = true;
-          }
-        })
-        .catch(() => {
-          this.error = "Votre email ou mot de passe est incorrécte";
-          this.shwoForgetPassword = true;
-        });
+      login(this)
     },
     resetError: function () {
       this.error = "";
@@ -165,7 +142,7 @@ export default {
         }
         input {
           width: 100%;
-          &:placeholder {
+          &::placeholder {
             color: gray;
           }
         }
@@ -177,4 +154,9 @@ export default {
     }
   }
 }
+  @media screen and (max-width: 990px){
+    .container .col-md-6:last-of-type{
+      border: unset;
+    }
+  }
 </style>

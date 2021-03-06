@@ -33,17 +33,14 @@
       </div>
       <footer class="post__footer">
         <div class="likes">
-          <span
-            :class="
-              isPostLiked
-                ? 'fas fa-thumbs-up fa-2x text-primary'
-                : 'far fa-thumbs-up fa-2x text-primmary'
-            "
-          ></span>
-          <span>{{ getPost.likeList.length }}</span>
+          <span :class="isPostLiked ?  'fas fa-thumbs-up fa-2x text-primary': 'far fa-thumbs-up fa-2x text-primmary'" @click="likePost" ></span> <span>{{postLength()}}</span>
         </div>
-        <span class="far fa-comment-alt fa-2x"></span>
+        <div class="comments">
+          <span :class="`${fa} fa-comment-alt fa-2x`"></span><span>{{getPost.comments}}</span>
+        </div>
       </footer>
+      <CommentForm  :postId="getPost.id" />
+      <CommentList v-if="getPost.comments > 0"  :comments="comments"/>
     </article>
   </div>
 </template>
@@ -52,29 +49,35 @@
 import axios from "axios";
 import moment from "moment";
 import { mapActions, mapGetters } from "vuex";
+import CommentForm from "../components/CommentForm";
+import CommentList from "../components/CommentList";
 export default {
   name: "PostSingle",
-  components: {},
+  components: {CommentList, CommentForm},
   data() {
     return {
       id: "",
-    };
+      post : {},
+      comments: []
+    }
   },
   computed: {
-    ...mapGetters(["getPost", "getLogedUser"]),
+    ...mapGetters(["getPost", "getLogedUser", "getComments"]),
     isPostLiked: function () {
-      let youLiked = false;
-      this.getPost.likeList.forEach((like) => {
+      this.getPost.likeList.forEach(like => {
         if (like.UserId === this.getLogedUser.id) {
-          youLiked = true;
+          this.youLikedPost = true
         }
-      });
-      return youLiked;
+      })
+      return this.youLikedPost
     },
+    fa: function () {
+      return this.getPost.comments > 0 ? 'fas' : 'far'
+    }
   },
-  created() {
+  async created() {
     this.id = this.$route.params.id;
-    axios
+    await axios
       .get(`http://localhost:8000/api/posts/post/${this.id}`, {
         timeout: 1000,
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -85,9 +88,29 @@ export default {
         poste.createdAt = moment(poste.createdAt).fromNow();
         this.setPost(poste);
       });
+     await axios
+        .get(`http://localhost:8000/api/comments/${this.getPost.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(response => {
+          console.log(response)
+          moment.locale('fr');
+          let comments = response.data
+          moment.locale('fr');
+          comments.forEach(comment =>{
+            comment.createdAt =  moment(comment.createdAt).fromNow()
+          })
+          this.comments = response.data
+        }).catch((err)=> {
+          console.log(err)
+          this.comments = []
+        })
+
   },
   methods: {
-    ...mapActions(["setPost"]),
+    ...mapActions(["setPost", "setPosts", "setComments"]),
     signaler: function () {
       let modal_bg = document.createElement("div");
       modal_bg.style.width = "100vw";
@@ -105,9 +128,7 @@ export default {
       modal.classList.add("alert-warning");
       modal.style.width = "40%";
       let p = document.createElement("p");
-      p.innerHTML = `
-        Vous avez signaler la publication de <strong>${this.getPost.userPseudo}</strong>, nous examinerons cette publication et prendrons une décision. Merci :)
-      `;
+      p.innerHTML = `Vous avez signaler la publication de <strong>${this.getPost.userPseudo}</strong>, nous examinerons cette publication et prendrons une décision. Merci :)`;
       let button = document.createElement("button");
       button.classList = "btn btn-danger";
       button.innerHTML = "fermer";
@@ -132,11 +153,46 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    likePost: function(){
+      let data = {
+        userId : this.getLogedUser.id
+      }
+      axios.post(`http://localhost:8000/api/likes/${this.getPost.id}/${!this.youLikedPost ? 1 : 0}`, data, {
+        timeout: 1000,
+        headers: { Authorization: "Bearer " + window.localStorage.getItem('token') },
+      })
+      .then(()=>{
+        axios
+          .get(`http://localhost:8000/api/posts/post/${this.getPost.id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((reponse) => {
+            axios
+            .get("http://localhost:8000/api/posts", {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            })
+            .then((reponse) => {
+              this.posts = reponse.data;
+              this.setPosts(reponse.data);
+            })
+            this.post = reponse.data;
+            this.setPost(reponse.data);
+            this.youLikedPost = !this.youLikedPost
+          })
+      })
+    },
+    postLength : function(){
+      return this.getPost.likeList.length
+    }
   },
   watch: {
-    "$route.params.id": function () {
+    "$route.params.id": async function  () {
       this.id = this.$route.params.id;
-      axios
+      await axios
         .get(`http://localhost:8000/api/posts/post/${this.id}`, {
           timeout: 1000,
           headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -145,8 +201,28 @@ export default {
           moment.locale("fr");
           let poste = response.data;
           poste.createdAt = moment(poste.createdAt).fromNow();
+          this.post = poste
           this.setPost(poste);
         });
+      await axios
+        .get(`http://localhost:8000/api/comments/${this.getPost.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(response => {
+          console.log(response)
+          moment.locale('fr');
+          let comments = response.data
+          moment.locale('fr');
+          comments.forEach(comment =>{
+            comment.createdAt =  moment(comment.createdAt).fromNow()
+          })
+          this.comments = response.data
+        }).catch((err)=> {
+        console.log(err)
+        this.comments = []
+      })
     },
   },
 };
@@ -298,10 +374,23 @@ export default {
   }
 }
 
-@media screen and (max-width: 768px) {
-  .post {
-    max-width: unset;
-    margin-bottom: 0.5em;
+.likes, .comments{
+  span:last-of-type{
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-left: .3em;
   }
+}
+
+@media screen and (max-width: 990px) {
+  .home {
+    max-width: unset;
+        width: 100%;
+        left: unset;
+        margin: auto;
+        position: relative;
+        border: none;
+    margin-bottom: 5em;
+    }
 }
 </style>

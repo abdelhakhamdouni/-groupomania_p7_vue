@@ -9,7 +9,8 @@ const state = {
   lastPosts: [],
   user: {},
   profile: {},
-  post: null
+  post: null,
+  comments: []
 };
 
 const getters = {
@@ -30,6 +31,9 @@ const getters = {
   },
   getProfile: ()=>{
     return state.profile
+  },
+  getComments: ()=>{
+    return state.comments
   }
 };
 
@@ -51,6 +55,12 @@ const mutations = {
   },
   SET_PROFILE: (state, profile)=>{
     state.profile = profile
+  },
+  SET_COMMENTS: (state, comments)=>{
+    state.comments = comments
+  },
+  SET_COMMENT: (state, comment)=>{
+    state.comments = {...state.comments, comment}
   }
 };
 
@@ -72,6 +82,9 @@ const actions = {
   },
   setProfile: ({commit,}, profile)=>{
     commit('SET_PROFILE', profile)
+  },
+  setComments: ({commit}, comments)=>{
+    commit('SET_COMMENTS', comments)
   }
 };
 

@@ -1,11 +1,17 @@
 <template>
   <article class="profile">
+    <h2 class="my-5 text-uppercase font-weight-bold">Page de profile</h2>
     <img :src="getProfile.avatar" alt="" />
     <div class="profile-details">
       <h2 class="font-weight-bold">{{ getProfile.firstName }} {{ getProfile.lastName }}</h2>
-      <p class="badge badge-pill badge-primary">{{role}} <span v-if="this.getProfile.roles.includes('ROLE_ADMIN')" class="fa fa-star"></span></p>
-      <p class="text-orange">{{getProfile.createdAt}}</p>
-      <p class="email pt-3">{{getProfile.email}}</p>
+      <p class="badge badge-pill badge-primary">{{role}} <span v-if="this.getProfile.roles.includes('ROLE_ADMIN')" class="fa fa-shield-alt"></span></p>
+      <p>A rejoint Groupomania : <span class="text-orange">{{getProfile.createdAt}}</span></p>
+      <p class="email pt-3" v-if="getProfile.id != getLogedUser.id"><a class="badge badge-pill badge-success" href="`mailto:${getProfile.email}`">Envoyer un mail <span class="fa fa-envelope ml-1"></span></a></p>
+      <div class="actions" v-if="getProfile.roles">
+        <router-link to="#" v-if="getProfile.id == getLogedUser.id || getLogedUser.roles.includes('ROLE_ADMIN')"  class="badge badge-pill badge-danger mr-1">Supprimer <span class="fa fa-trash"></span></router-link>
+        <router-link to="#" v-if="getProfile.id == getLogedUser.id" class="badge badge-pill badge-success">Modifier <span class="fa fa-edit"></span></router-link>
+      </div>
+      <router-link to="#" v-if="getProfile.id == getLogedUser.id" class="badge badge-pill badge-success">Chnager mon mot de passe <span class="fa fa-lock"></span></router-link>
     </div>
   </article>
 </template>
@@ -31,11 +37,11 @@ export default {
       });
   },
   methods: {
-    ...mapGetters(["getProfile"]),
+    ...mapGetters(["getProfile", "getLogedUser"]),
     ...mapActions(["setProfile"]),
   },
   computed: {
-    ...mapGetters(["getProfile"]),
+    ...mapGetters(["getProfile", "getLogedUser"]),
     role: function(){
       console.log(this.getProfile.roles)
      return  this.getProfile.roles.includes('ROLE_ADMIN') ? "Admin" : "Membre"
@@ -69,7 +75,7 @@ export default {
   left: 30%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   padding-top: 0;
   border-left: 1px solid #adadad;
@@ -99,5 +105,15 @@ export default {
       color: orange;
     }
   }
+}
+@media screen and (max-width: 990px){
+  .profile{
+    width: 100%;
+    left: unset;
+    margin: auto;
+    position: relative;
+    border: none;
+  }
+
 }
 </style>

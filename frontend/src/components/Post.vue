@@ -23,10 +23,13 @@
 
     <footer class="post__footer">
       <div class="likes">
-        <span :class="isPostLiked ?  'fas fa-thumbs-up fa-2x text-primary': 'far fa-thumbs-up fa-2x text-primmary'" @click="likePost" ></span> <span>{{postLength}}</span>
+        <span :class="isPostLiked ?  'fas fa-thumbs-up fa-2x text-primary': 'far fa-thumbs-up fa-2x text-primmary'" @click="likePost" ></span> <span>{{postLength()}}</span>
       </div>
-      <span class="far fa-comment-alt fa-2x"></span>
+      <div class="comments">
+        <span :class='`${fa} fa-comment-alt fa-2x`'></span><span class="ml-1">{{post.comments}}</span>
+      </div>
     </footer>
+      <CommentForm :postId="post.id" />
   </article>
 </template>
 
@@ -34,7 +37,9 @@
 import moment from 'moment'
 import {mapActions, mapGetters} from "vuex";
 import axios from "axios";
+import CommentForm from "./CommentForm";
 export default {
+  components: {CommentForm},
   props: {post: {
     type: Object
   }},
@@ -43,8 +48,15 @@ export default {
       youLikedPost: '',
     }
   },
+  created() {
+
+  },
   computed: {
     ...mapGetters(['getLogedUser']),
+    fa: function(){
+      return this.post.comments > 0 ? 'fas' : 'far'
+
+    },
     createdAt() {
       moment.locale('fr');
       return moment(this.post.createdAt).fromNow()
@@ -57,10 +69,7 @@ export default {
       })
       return this.youLikedPost
     },
-    postLength : function(){
-      
-        return this.youLikedPost ?  this.post.likeList.length + 1 : this.post.likeList.length
-    }
+
   },
   methods: {
     ...mapActions(["setPosts", "setLastPosts"]),
@@ -134,12 +143,24 @@ export default {
           headers: { Authorization: "Bearer " + window.localStorage.getItem('token') },
         })
         .then(()=>{
-          this.youLikedPost = !this.youLikedPost
-          
+          axios
+            .get("http://localhost:8000/api/posts", {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            })
+            .then((reponse) => {
+              this.posts = reponse.data;
+              this.setPosts(reponse.data);
+              this.youLikedPost = !this.youLikedPost
+            })
         })
-      }
-    
-  }
+      },
+    postLength : function(){
+      return this.post.likeList.length
+    }
+  },
+
 }
 </script>
 

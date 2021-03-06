@@ -3,8 +3,10 @@
     <h5 class="pt-3">
       Les dernieres  publications
     </h5>
-    <div class="posts" v-for="post in getLastPosts" :key="post.id">
-      <post-thumb :post="post"/>
+    <div class="list">
+      <div class="posts" v-for="post in getLastPosts" :key="post.id">
+        <post-thumb :post="post"/>
+      </div>
     </div>
   </div>
 </template>
@@ -40,7 +42,7 @@
   }
 </script>
 
-<style>
+<style lang="scss" scoped>
   .last-posts{
     position: fixed;
     height: 100vh;
@@ -48,5 +50,18 @@
     right: 0;
     z-index: 999;
     border-right: 1px solid gray;
+  }
+  @media screen and (max-width: 990px){
+    .last-posts{
+      width: 100%;
+      left: unset;
+      margin: auto;
+      border: none;
+      padding-bottom: 5em;
+      margin-bottom: 10em;
+      position: relative;
+
+    }
+
   }
 </style>

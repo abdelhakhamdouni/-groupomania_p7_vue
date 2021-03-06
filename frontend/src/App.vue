@@ -1,9 +1,12 @@
 <template>
   <div id="app">
-    <div v-if="isUserLogged">
+    <div class="hideOnMobile" v-if="isUserLogged">
       <status-bar />
       <last-posts />
       <users-list />
+    </div>
+    <div class="showOnMobile">
+      <StatusBarMobile />
     </div>
       <main class="main">
         <router-view/>
@@ -17,8 +20,9 @@
   import StatusBar from './components/StatusBar.vue'
 import LastPosts from './components/LastPosts.vue'
   import UsersList from "./components/UsersList";
+  import StatusBarMobile from "./components/StatusBarMobile";
   export default {
-    components: {UsersList, StatusBar, LastPosts },
+    components: {StatusBarMobile, UsersList, StatusBar, LastPosts },
     computed:{
 
       ...mapGetters(['isUserLogged'])
@@ -68,8 +72,17 @@ body{
   margin: 0;
   padding: 0;
 }
-
-
+.showOnMobile{
+  display: none;
+}
+@media  screen and (max-width: 990px) {
+    .hideOnMobile{
+      display: none;
+  }
+  .showOnMobile{
+    display: flex;
+  }
+}
 body, #app{
   min-height: 100vh;
 }

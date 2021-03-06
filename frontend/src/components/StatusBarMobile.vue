@@ -1,7 +1,9 @@
 <template>
       <nav class="navbar">
         <router-link class="navbar-brand" to="/"><img src="@/assets/logos/icon.svg" class="img-fluid" alt=""></router-link>
-        <router-link class="nav-link" to="/"><span class="fas fa-home fa-3x"></span></router-link>
+        <router-link class="nav-link" to="/"><span class="fas fa-home fa-3x" ></span></router-link>
+        <router-link class="nav-link" to="/membres" ><span class="fa fa-users fa-3x"></span></router-link>
+        <router-link class="nav-link" to="/derniers"><span class="far fa-comments fa-3x"></span></router-link>
         <button class="nav-link nav-button" @click="logout"><span class="fa fa-sign-out-alt fa-3x"></span></button>
         <router-link class="navbar-brand"  :to="`/profile/${getLogedUser.id}`"><img  :src="getLogedUser.avatar" alt=""></router-link>
       </nav>
@@ -48,7 +50,7 @@ export default {
     padding: 2em 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: center;
     a, button{
       text-decoration: none;
@@ -100,7 +102,7 @@ export default {
       margin-left: 1em;
       height: 45px;
       width: 45px;
-      border-radius: 50%em;
+      border-radius: 50%;
       padding: 3px;
       border: 2px solid gray;
     }

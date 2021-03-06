@@ -12,7 +12,7 @@ module.exports = {
     
     //strings for post querys
     createPost: "INSERT INTO posts(title, image, description, type, UserId, createdAt,updatedAt,userPseudo) VALUE(?,?,?,?,?,now(),now(),?)",
-    getPosts : `SELECT posts.*, users.avatar FROM posts,users WHERE posts.UserId = users.id ORDER BY updatedAt DESC`,
+    getPosts : `SELECT posts.*, users.avatar FROM posts,users WHERE posts.UserId = users.id`,
     getLastsPostsByUserId : "SELECT id, image, description FROM posts ORDER BY createdAt DESC LIMIT 5",
     getAllPostsWithUserId: "SELECT posts.*, users.avatar FROM posts, users WHERE posts.UserId = users.id AND users.id = ?",
     getCountAllPostsByUserId : "SELECT posts.*, users.avatar FROM posts, users WHERE posts.UserId = users.id AND users.id = ?",
@@ -27,7 +27,7 @@ module.exports = {
     deleteComment: "DELETE FROM comments WHERE UserId = ? OR PostId = ?",
     getCommentById : "SELECT * FROM comments WHERE id = ?",
     getCommentsById : "SELECT * FROM comments WHERE id = ? OR CommentId = ?",
-    getCommentsByPostId : "SELECT * FROM comments WHERE PostId = ? ORDER BY CommentId",
+    getCommentsByPostId : "SELECT comments.*, users.avatar, users.id, users.firstName, users.lastName FROM comments, users WHERE comments.PostId = ? AND users.id = comments.UserId ORDER BY CommentId",
     getAllCommentsByUserId: "SELECT * FROM comments WHERE UserId = ?",
     getCommentsById : "SELECT * FROM comments WHERE id = ? OR CommentId = ?",
     addIdtoComment: "UPDATE comments SET CommentId = ? WHERE id = ?",

@@ -1,19 +1,21 @@
 <template>
   <form class="form">
-    <img :src="getLogedUser.avatar" alt="avatar">
-    <div v-if="success" class="alert alert-success">
-      <span class="close fa fa-times" @click="success = false"></span>
-      {{success}}
+    <div class="input">
+      <img :src="getLogedUser.avatar" alt="avatar">
+      <div v-if="success" class="alert alert-success">
+        <span class="close fa fa-times" @click="success = false"></span>
+        {{success}}
+      </div>
+      <div v-if="error" class="alert alert-warning">
+        <span class="close fa fa-times" @click="error = false"></span>
+        {{error}}
+      </div>
+      <textarea type="text" class="postBody" rows="1" placeholder="Ecrivez quleque chose..." v-model="content" @focus="success = false"></textarea>
     </div>
-    <div v-if="error" class="alert alert-warning">
-      <span class="close fa fa-times" @click="error = false"></span>
-      {{error}}
-    </div>
-    <textarea type="text" class="postBody" placeholder="Ecrivez quleque chose..." v-model="content" @focus="success = false"></textarea>
     <div class="form-footer">
       <div class="media">
         <div v-if="!url">
-          <label for="form-image" class="form-image"><span class="fa fa-image fa-2x"></span> Image</label>
+          <label for="form-image" class="form-image"><span class="fa fa-image fa-2x"></span> Image / GIF</label>
           <input @change="setImageFile" type="file" id="form-image">
         </div>
         <div v-if="url">
@@ -100,6 +102,12 @@ export default {
 
 <style lang="scss" scoped>
   .form{
+    .alert{
+      font-size: .9em !important;
+      position: absolute;
+      width: 100%;
+      padding: 1em;
+    }
     border: 1px solid rgb(189, 183, 183);
     padding: .5em;
     width: 100%;
@@ -111,6 +119,13 @@ export default {
     top: 0;
     background-color: #fff;
     z-index: 999;
+    transform-origin: top;
+    .input{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      position: relative;
+    }
     img{
       width: 35px;
       height: 35px;
@@ -121,10 +136,9 @@ export default {
       border: 1px solid rgb(216, 216, 216);
       border-radius: 1em;
       padding: .3em;
-      margin-left: 35px;
-      margin-top: .5em;
+      margin-left: 1em;
       background-color: #dfdfdf;
-      resize: none;
+      flex: 1;
       &:focus{
         outline: none;
         background-color: #fff;
@@ -137,7 +151,7 @@ export default {
       display: flex;
       justify-content: space-between;
       flex-wrap: nowrap;
-      padding: 1em 1em 0;
+      align-items: center;
       margin-top: 1em;
       width: 100%;
       border-top: 1px solid lightgray;
@@ -162,6 +176,8 @@ export default {
         align-items: center;
         padding: .3em 1em;
         border-radius: 2em;
+        margin-bottom: 0;
+        padding-bottom: 0;
         span{
           margin-right: .3em;
         }

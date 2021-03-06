@@ -13,10 +13,16 @@ module.exports = {
     let _comments = new Array();
     query(conn, querysStrings.getCommentsByPostId, [req.params.id])
       .then((comments) => {
-        res.status(200);
-        res.json(comments);
+          console.log(comments)
+          comments.forEach(comment => {
+            comment.avatar = req.protocol + "://" + req.get("host") + comment.avatar
+              if (comments.indexOf(comment) === comments.length - 1) {
+                  res.status(200).json(comments);
+              }
+          })
       })
       .catch((err) => {
+          console.log(err)
         res.status(500);
         res.json({ err });
       });
@@ -41,8 +47,8 @@ module.exports = {
               ]);
             }
             query(conn, querysStrings.getPostByIdForLocal, [req.body.postId]).then(
-              (post,err) => {
-                  if(err)console.log(err)
+              (post) => {
+                  console.log(post)
                 query(conn, querysStrings.updatePostComments, [
                   post[0].comments + 1,
                   post[0].id,
@@ -55,7 +61,6 @@ module.exports = {
         );
       })
       .catch((err) => {
-        console.log(err);
         res.status(400);
         res.json({ err });
       });
