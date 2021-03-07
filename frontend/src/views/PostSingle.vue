@@ -51,6 +51,8 @@ import moment from "moment";
 import { mapActions, mapGetters } from "vuex";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
+import Api from "../helpers/api/request";
+import Utils from "../helpers/api/utils";
 export default {
   name: "PostSingle",
   components: {CommentList, CommentForm},
@@ -77,17 +79,7 @@ export default {
   },
   async created() {
     this.id = this.$route.params.id;
-    await axios
-      .get(`http://localhost:8000/api/posts/post/${this.id}`, {
-        timeout: 1000,
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-      })
-      .then((response) => {
-        moment.locale("fr");
-        let poste = response.data;
-        poste.createdAt = moment(poste.createdAt).fromNow();
-        this.setPost(poste);
-      });
+    await Api.getPosts(this)
      await axios
         .get(`http://localhost:8000/api/comments/${this.getPost.id}`, {
           headers: {
@@ -111,118 +103,16 @@ export default {
   },
   methods: {
     ...mapActions(["setPost", "setPosts", "setComments"]),
-    signaler: function () {
-      let modal_bg = document.createElement("div");
-      modal_bg.style.width = "100vw";
-      modal_bg.style.height = "100vh";
-      modal_bg.style.top = "0";
-      modal_bg.style.left = "0";
-      modal_bg.style.backgroundColor = "#444444a0";
-      modal_bg.style.position = "fixed";
-      modal_bg.style.display = "flex";
-      modal_bg.style.justifyContent = "center";
-      modal_bg.style.alignItems = "center";
-      modal_bg.style.zIndex = "10000";
-      let modal = document.createElement("div");
-      modal.classList.add("alert");
-      modal.classList.add("alert-warning");
-      modal.style.width = "40%";
-      let p = document.createElement("p");
-      p.innerHTML = `Vous avez signaler la publication de <strong>${this.getPost.userPseudo}</strong>, nous examinerons cette publication et prendrons une décision. Merci :)`;
-      let button = document.createElement("button");
-      button.classList = "btn btn-danger";
-      button.innerHTML = "fermer";
-      modal.appendChild(p);
-      modal.appendChild(button);
-      modal_bg.appendChild(modal);
-      document.querySelector("body").appendChild(modal_bg);
-      modal_bg.addEventListener("click", function () {
-        document.querySelector("body").removeChild(this);
-      });
-    },
-    deletePost: function () {
-      let id = this.getPost.id;
-      axios
-        .delete(`http://localhost:8000/api/posts/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then(() => {
-          this.$router.push({ name: "Home" });
-        })
-        .catch((err) => console.log(err));
-    },
-    likePost: function(){
-      let data = {
-        userId : this.getLogedUser.id
-      }
-      axios.post(`http://localhost:8000/api/likes/${this.getPost.id}/${!this.youLikedPost ? 1 : 0}`, data, {
-        timeout: 1000,
-        headers: { Authorization: "Bearer " + window.localStorage.getItem('token') },
-      })
-      .then(()=>{
-        axios
-          .get(`http://localhost:8000/api/posts/post/${this.getPost.id}`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((reponse) => {
-            axios
-            .get("http://localhost:8000/api/posts", {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            })
-            .then((reponse) => {
-              this.posts = reponse.data;
-              this.setPosts(reponse.data);
-            })
-            this.post = reponse.data;
-            this.setPost(reponse.data);
-            this.youLikedPost = !this.youLikedPost
-          })
-      })
-    },
-    postLength : function(){
-      return this.getPost.likeList.length
-    }
+    signale : Utils.signaler(this, this.getPost),
+    deletePost: Utils.delete(this),
+    likePost: Api.likePost(this),
+    postLength : Utils.postLength(this)
   },
   watch: {
     "$route.params.id": async function  () {
       this.id = this.$route.params.id;
-      await axios
-        .get(`http://localhost:8000/api/posts/post/${this.id}`, {
-          timeout: 1000,
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        })
-        .then((response) => {
-          moment.locale("fr");
-          let poste = response.data;
-          poste.createdAt = moment(poste.createdAt).fromNow();
-          this.post = poste
-          this.setPost(poste);
-        });
-      await axios
-        .get(`http://localhost:8000/api/comments/${this.getPost.id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then(response => {
-          console.log(response)
-          moment.locale('fr');
-          let comments = response.data
-          moment.locale('fr');
-          comments.forEach(comment =>{
-            comment.createdAt =  moment(comment.createdAt).fromNow()
-          })
-          this.comments = response.data
-        }).catch((err)=> {
-        console.log(err)
-        this.comments = []
-      })
+      await Api.getPosts(this)
+      await Api.getComments(this)
     },
   },
 };
