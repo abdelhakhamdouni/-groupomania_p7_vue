@@ -168,7 +168,6 @@ export default {
 .post{
   box-shadow: 0 0 8px lightgray;
   border-radius: 5px;
-
   //margin: 1em;
   margin-bottom: 1em;
   .post__header{

@@ -2,7 +2,6 @@ import axios from "axios";
 import moment from "moment";
 
 const Api = {
-
   login: function (vuem) {
     vuem.error = "";
     axios
@@ -44,7 +43,7 @@ const Api = {
   },
   getComments: function (vuem) {
     axios
-      .get(`http://localhost:8000/api/comments/${vuem.getPost.id}`, {
+      .get(`http://localhost:8000/api/comments/${vuem.id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

@@ -51,7 +51,7 @@ module.exports = {
     let avatar =
     req.file == undefined ?  null :
       req.file.filename !== undefined
-        ? `/images/avatars/${req.file.filename}`
+        ? `/images/${req.file.filename}`
         : null;
     query(conn, querysStrings.createUser, [
       firstName,

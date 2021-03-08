@@ -14,7 +14,7 @@ var storage = multer.diskStorage({
     if (file == undefined) {
       cb();
     }
-    cb(null, "images/avatars");
+    cb(null, "images");
   },
   filename: function (req, file, cb) {
     if (file == undefined) {

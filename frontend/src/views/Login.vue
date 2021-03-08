@@ -55,7 +55,7 @@
 </template>
 
 <script>
-  import {login} from '@/helpers/api/request.js'
+ import Api from '@/helpers/api/request'
 import { mapActions } from "vuex";
 export default {
   name: "Login",
@@ -71,7 +71,7 @@ export default {
   methods: {
     ...mapActions(["logUser"]),
     login: function () {
-      login(this)
+      Api.login(this)
     },
     resetError: function () {
       this.error = "";

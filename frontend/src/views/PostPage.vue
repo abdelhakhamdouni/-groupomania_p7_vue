@@ -23,5 +23,12 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+  /*.posts{*/
+  /*  display: flex;*/
+  /*  flex-direction: column;*/
+  /*  justify-content: flex-start;*/
+  /*  align-items: center;*/
+  /*  width: 100%;*/
+  /*}*/
 </style>

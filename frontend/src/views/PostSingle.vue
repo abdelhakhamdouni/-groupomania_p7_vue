@@ -52,7 +52,7 @@ import { mapActions, mapGetters } from "vuex";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
 import Api from "../helpers/api/request";
-import Utils from "../helpers/api/utils";
+import Utils from "../helpers/utils";
 export default {
   name: "PostSingle",
   components: {CommentList, CommentForm},
@@ -81,7 +81,7 @@ export default {
     this.id = this.$route.params.id;
     await Api.getPosts(this)
      await axios
-        .get(`http://localhost:8000/api/comments/${this.getPost.id}`, {
+        .get(`http://localhost:8000/api/comments/${this.id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -103,16 +103,24 @@ export default {
   },
   methods: {
     ...mapActions(["setPost", "setPosts", "setComments"]),
-    signale : Utils.signaler(this, this.getPost),
-    deletePost: Utils.delete(this),
-    likePost: Api.likePost(this),
-    postLength : Utils.postLength(this)
+    signaler : function() {
+      Utils.signaler(this, this.getPost)
+    },
+    deletePost: function(){
+      Utils.delete(this)
+    },
+    likePost: function () {
+      Api.likePost(this)
+    },
+    postLength : function () {
+      Utils.postLength(this)
+    }
   },
   watch: {
     "$route.params.id": async function  () {
       this.id = this.$route.params.id;
-      await Api.getPosts(this)
-      await Api.getComments(this)
+      await function(){Api.getPosts(this)}
+      await function (){Api.getComments(this)}
     },
   },
 };
