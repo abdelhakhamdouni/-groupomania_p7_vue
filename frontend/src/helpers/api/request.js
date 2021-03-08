@@ -27,7 +27,7 @@ const Api = {
         vuem.shwoForgetPassword = true;
       });
   },
-  getPosts: function (vuem) {
+  getPost: function (vuem) {
     axios
       .get(`http://localhost:8000/api/posts/post/${vuem.id}`, {
         timeout: 1000,
@@ -41,9 +41,9 @@ const Api = {
         vuem.setPost(poste);
       });
   },
-  getComments: function (vuem) {
+  getComments: function (vuem,id) {
     axios
-      .get(`http://localhost:8000/api/comments/${vuem.id}`, {
+      .get(`http://localhost:8000/api/comments/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -56,7 +56,7 @@ const Api = {
         comments.forEach(comment => {
           comment.createdAt = moment(comment.createdAt).fromNow()
         })
-        vuem.comments = response.data
+        vuem.setComments(response.data)
       }).catch((err) => {
       console.log(err)
       vuem.comments = []

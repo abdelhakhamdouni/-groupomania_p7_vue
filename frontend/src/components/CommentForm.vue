@@ -30,6 +30,8 @@
                 let postId = this.postId
                 let commentId  = 0
 
+                if(!content) return false
+
                 let comment = { content, userId, postId, commentId}
                 axios.post( "http://localhost:8000/api/comments", comment, {
                     headers: { Authorization: "Bearer " + localStorage.getItem('token') }
@@ -60,7 +62,6 @@
 
 <style lang="scss" scoped>
     .commentForm{
-        border-top: 2px solid lightgray;
         padding: 1em .5em;
         width: 100%;
         display: flex;

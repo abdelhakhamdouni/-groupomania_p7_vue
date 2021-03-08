@@ -40,7 +40,7 @@
         </div>
       </footer>
       <CommentForm  :postId="getPost.id" />
-      <CommentList v-if="getPost.comments > 0"  :comments="comments"/>
+      <CommentList v-if="getPost.comments > 0"  :comments="getComments"/>
     </article>
   </div>
 </template>
@@ -79,7 +79,7 @@ export default {
   },
   async created() {
     this.id = this.$route.params.id;
-    await Api.getPosts(this)
+    await Api.getPost(this)
      await axios
         .get(`http://localhost:8000/api/comments/${this.id}`, {
           headers: {
@@ -94,12 +94,15 @@ export default {
           comments.forEach(comment =>{
             comment.createdAt =  moment(comment.createdAt).fromNow()
           })
-          this.comments = response.data
+          this.setComments(response.data)
         }).catch((err)=> {
           console.log(err)
           this.comments = []
         })
 
+  },
+  mounted() {
+    document.querySelectorAll('.commentForm').forEach(ele=> ele.style.display = "none")
   },
   methods: {
     ...mapActions(["setPost", "setPosts", "setComments"]),
@@ -114,13 +117,22 @@ export default {
     },
     postLength : function () {
       Utils.postLength(this)
+    },
+    toggleCommentForm :function () {
+      let commentForm = document.querySelectorAll('.commentForm')
+      commentForm.forEach(el => {
+        el.style.display == "none" ?
+                el.style.display = "flex" :
+                el.style.display = "none"
+
+      })
     }
   },
   watch: {
-    "$route.params.id": async function  () {
+    "$route.params.id": function  () {
       this.id = this.$route.params.id;
-      await function(){Api.getPosts(this)}
-      await function (){Api.getComments(this)}
+      Api.getPost(this, this.$route.params.id)
+      Api.getComments(this, this.$route.params.id)
     },
   },
 };

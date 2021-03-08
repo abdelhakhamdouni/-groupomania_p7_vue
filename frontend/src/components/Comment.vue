@@ -38,7 +38,6 @@ export default {
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
-    box-shadow: 0 0 10px #a7a7a7;
     margin-top: 1em;
     padding: .5em;
     border-radius: 5px;

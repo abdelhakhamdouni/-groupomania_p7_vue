@@ -25,11 +25,11 @@
       <div class="likes">
         <span :class="isPostLiked ?  'fas fa-thumbs-up fa-2x text-primary': 'far fa-thumbs-up fa-2x text-primmary'" @click="likePost" ></span> <span>{{postLength()}}</span>
       </div>
-      <div class="comments">
+      <div class="comments" @click="toggleCommentForm">
         <span :class='`${fa} fa-comment-alt fa-2x`'></span><span class="ml-1">{{post.comments}}</span>
       </div>
     </footer>
-      <CommentForm :postId="post.id" />
+      <CommentForm :class="'commentForm'+ post.id" :postId="post.id" />
   </article>
 </template>
 
@@ -47,9 +47,6 @@ export default {
     return {
       youLikedPost: '',
     }
-  },
-  created() {
-
   },
   computed: {
     ...mapGetters(['getLogedUser']),
@@ -70,6 +67,9 @@ export default {
       return this.youLikedPost
     },
 
+  },
+  mounted() {
+    document.querySelector('.commentForm'+this.post.id).style.display = "none"
   },
   methods: {
     ...mapActions(["setPosts", "setLastPosts"]),
@@ -158,8 +158,15 @@ export default {
       },
     postLength : function(){
       return this.post.likeList.length
+    },
+    toggleCommentForm :function () {
+      let commentForm = document.querySelector('.commentForm'+this.post.id)
+      commentForm.style.display == "none" ?
+              commentForm.style.display = "flex" :
+              commentForm.style.display = "none"
     }
   },
+
 
 }
 </script>
@@ -288,9 +295,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1em 2em;
+    padding: 0em 2em 1em;
     font-size: .7em;
-    box-shadow: 0 -2px 5px rgb(223, 223, 223);
+    //box-shadow: 0 -2px 5px rgb(223, 223, 223);
     span{
       cursor: pointer;
       
