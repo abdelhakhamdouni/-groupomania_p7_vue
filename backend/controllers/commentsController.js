@@ -70,8 +70,10 @@ module.exports = {
   deleteComment: async (req, res) => {
     let id = req.params.id;
     let conn = await db;
+    console.log(id)
     query(conn, querysStrings.getCommentsById, [id, id])
       .then((comments) => {
+        console.log(comments)
         let commId = comments[0].id;
         let postId = comments[0].PostId;
         let commCount = comments.length;

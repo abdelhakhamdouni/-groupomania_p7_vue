@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Utils = {
-  signaler: function (vuem, post) {
+  signaler: function (user, mes) {
     let modal_bg = document.createElement("div");
     modal_bg.style.width = "100vw";
     modal_bg.style.height = "100vh";
@@ -18,7 +18,7 @@ const Utils = {
     modal.classList.add("alert-warning");
     modal.style.width = "40%";
     let p = document.createElement("p");
-    p.innerHTML = `Vous avez signaler la publication de <strong>${post.userPseudo}</strong>, nous examinerons cette publication et prendrons une décision. Merci :)`;
+    p.innerHTML = `Vous avez signaler la ${mes} de <strong>${user}</strong>, nous examinerons cette publication et prendrons une décision. Merci :)`;
     let button = document.createElement("button");
     button.classList = "btn btn-danger";
     button.innerHTML = "fermer";

@@ -40,8 +40,9 @@
         </div>
       </footer>
       <CommentForm  :postId="getPost.id" />
-      <CommentList v-if="getPost.comments > 0"  :comments="getComments"/>
     </article>
+    <h4 >Liste des commentaires: </h4>
+      <CommentList class="comment-list" v-if=" getComments.length > 0"  :comments="getComments"/>
   </div>
 </template>
 
@@ -150,6 +151,17 @@ export default {
   border-left: 1px solid #adadad;
   border-right: 1px solid #adadad;
   min-height: 100vh;
+
+}
+.comment-list{
+  width: 95%;
+}
+h4{
+  width: 95%;
+  text-align: left;
+  font-size: 1em;
+  color: gray;
+  margin-bottom: 0;
 }
 .post {
   //box-shadow: 0 0 8px lightgray;
@@ -159,7 +171,7 @@ export default {
   //margin: 1em;
   margin-bottom: 1em;
   width: 95%;
-
+  box-shadow: 0 0 5px rgb(221, 221, 221);
   .post__header {
     display: flex;
     justify-content: flex-start;

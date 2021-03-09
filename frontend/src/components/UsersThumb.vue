@@ -39,7 +39,7 @@
         border: 1px solid lightblue;
         margin: .5em;
         border-radius: 1em;
-        height: 3.5em;
+        height: 4em;
         overflow: hidden;
         text-decoration: none;
         color: rgb(77, 77, 77);
@@ -54,15 +54,18 @@
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
+            height: 4em;
         }
         h5{
             font-size: 14px;
+            margin: 0;
             margin-left: 1em;
             text-align: left;
             font-weight: 600;
         }
         h6{
             font-size: 12px;
+            margin: 0;
             margin-left: 1em;
         }
         .user-star{

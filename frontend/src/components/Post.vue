@@ -38,6 +38,8 @@ import moment from 'moment'
 import {mapActions, mapGetters} from "vuex";
 import axios from "axios";
 import CommentForm from "./CommentForm";
+import Utils from "../helpers/utils";
+import Api from '../helpers/api/request'
 export default {
   components: {CommentForm},
   props: {post: {
@@ -73,65 +75,11 @@ export default {
   },
   methods: {
     ...mapActions(["setPosts", "setLastPosts"]),
-    signaler: function(){
-      let modal_bg = document.createElement('div')
-      modal_bg.style.width = "100vw"
-      modal_bg.style.height = "100vh"
-      modal_bg.style.top = "0"
-      modal_bg.style.left = "0"
-      modal_bg.style.backgroundColor= "#444444a0"
-      modal_bg.style.position = "fixed"
-      modal_bg.style.display = "flex"
-      modal_bg.style.justifyContent = "center"
-      modal_bg.style.alignItems = "center"
-      modal_bg.style.zIndex = '10000'
-      let modal = document.createElement('div')
-      modal.classList.add('alert')
-      modal.classList.add('alert-warning')
-      modal.style.width = "40%"
-      let p = document.createElement('p')
-      p.innerHTML = `
-        Vous avez signaler la publication de <strong>${this.post.userPseudo}</strong>, nous examinerons cette publication et prendrons une décision. Merci :)
-      `;
-      let button = document.createElement('button')
-      button.classList = "btn btn-danger"
-      button.innerHTML ="fermer"
-      modal.appendChild(p)
-      modal.appendChild(button)
-      modal_bg.appendChild(modal)
-      document.querySelector('body').appendChild(modal_bg)
-      modal_bg.addEventListener('click', function(){
-        document.querySelector('body').removeChild(this)
-      })
+    signaler: function () {
+      Utils.signaler(this.post.userPseudo, "publication")
     },
     deletePost: function () {
-        let id = this.post.id
-        axios.delete(`http://localhost:8000/api/posts/${id}`, {
-          headers: {
-            Authorization : `Bearer ${localStorage.getItem('token')}`
-          }
-        })
-        .then(()=>{
-          axios.get("http://localhost:8000/api/posts", {
-            headers: {
-              Authorization : `Bearer ${localStorage.getItem('token')}`
-            }
-          })
-          .then(response=> {
-            axios.get(`http://localhost:8000/api/posts/lasts`, {
-            headers: {
-              Authorization : `Bearer ${localStorage.getItem('token')}`
-            }
-          })
-          .then(reponse=> {
-            this.setLastPosts(reponse.data)
-          } )
-        .catch(err => console.log(err))
-            this.posts = response.data
-            this.setPosts(response.data)
-          })
-        })
-      .catch(err => console.log(err))
+        Api.deletePost(this)
        
     },
     likePost: function(){
@@ -173,9 +121,9 @@ export default {
 
 <style lang="scss" scoped>
 .post{
-  box-shadow: 0 0 8px lightgray;
   border-radius: 5px;
   //margin: 1em;
+  box-shadow: 0 0 5px rgb(221, 221, 221);
   margin-bottom: 1em;
   .post__header{
     display: flex;

@@ -144,6 +144,7 @@ export default {
   justify-content: center;
   align-items: center;
   background-color: #327;
+  position: relative;
 }
 .container,
 .row {

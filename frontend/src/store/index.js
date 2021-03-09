@@ -61,6 +61,15 @@ const mutations = {
   },
   SET_COMMENT: (state, comment)=>{
     state.comments = {...state.comments, comment}
+  },
+  CLEAR_STATE: (state) => {
+    state.userLogged =  true
+    state.posts = []
+    state.lastPosts = []
+    state.post = null
+    state.user = {}
+    state.profile = {}
+    state.comments = []
   }
 };
 
@@ -85,6 +94,9 @@ const actions = {
   },
   setComments: ({commit}, comments)=>{
     commit('SET_COMMENTS', comments)
+  },
+  clearState: ({commit})=>{
+    commit('CLEAR_STATE')
   }
 };
 
